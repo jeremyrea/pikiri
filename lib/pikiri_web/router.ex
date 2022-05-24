@@ -16,8 +16,8 @@ defmodule PikiriWeb.Router do
 
   scope "/", PikiriWeb do
     pipe_through :browser
-
-    get "/", PageController, :index
+    
+    live "/", Live.Feed
   end
 
   # Other scopes may use custom stacks.
