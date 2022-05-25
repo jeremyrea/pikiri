@@ -129,6 +129,13 @@ html::-webkit-scrollbar {
 
 /* iOS scrollbar still appears... */
 
+.header {
+  font-size: xx-large;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 .card {
   display: flex;
   justify-content: center;
