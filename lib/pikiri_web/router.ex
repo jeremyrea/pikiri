@@ -15,8 +15,9 @@ defmodule PikiriWeb.Router do
   end
 
   scope "/", PikiriWeb do
+    import Phoenix.LiveDashboard.Router
     pipe_through :browser
-    
+
     live "/", Live.Feed
   end
 

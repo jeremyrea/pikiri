@@ -1,21 +1,16 @@
 defmodule PikiriWeb.Live.Feed do
-  use Phoenix.LiveView
-#   alias PikiriWeb.UserLive.Row
+  use PikiriWeb, :live_view
 
   def render(assigns) do
-    ~L"""
+    ~H"""
     <table>
       <tbody id="users" phx-update="append">
         <%= for {user, index} <- Enum.with_index(@users) do %>
-          <tr id=<%= user %>>
-            <td>
-                <%= if index == length(@users) - 1 do %>
-                    <div id="InfiniteScroll" phx-hook="InfiniteScroll" data-page="<%= @page %>"></div>
-                <% end %>
-                
-                <img src="/images/dataset/<%= user %>.jpg" style="max-height: 200px" />
-            </td>
-          </tr>
+          <.live_component module={RowComponent} id={user} user={user}>
+            <%= if index == length(@users) - 1 do %>
+              <div id="InfiniteScroll" phx-hook="InfiniteScroll" data-page={@page}></div>
+            <% end %>
+          </.live_component>
         <% end %>
       </tbody>
     </table>
