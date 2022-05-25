@@ -118,3 +118,42 @@
   0% { opacity: 1; }
   100% { opacity: 0; }
 }
+
+html {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+html::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+
+/* iOS scrollbar still appears... */
+
+.card {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+}
+
+.card td {
+  display: block;
+  justify-content: center;
+  width: 90%;
+  max-width: 500px;
+  aspect-ratio: 3.5 / 4.2;
+  border: lightgray;
+  border-style: solid;
+  border-width: thin;
+  border-radius: 0.1em;
+  padding-top: 5.714285714%;
+  padding-left: 5.714285714%;
+  padding-right: 5.714285714%;
+  margin-bottom: 2em;
+  box-shadow: 4px 4px 10px lightgray;
+  -webkit-box-shadow: 4px 4px 10px lightgray;
+}
+
+.card td img {
+  width: 100%;
+  aspect-ratio: 1;
+}

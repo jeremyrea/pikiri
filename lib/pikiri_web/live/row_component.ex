@@ -3,10 +3,10 @@ defmodule RowComponent do
 
   def render(assigns) do
     ~H"""
-    <tr id={"#{@id}"}>
+    <tr id={"#{@id}"} class="card">
       <td>
           <%= render_slot(@inner_block) %>
-          <img src={"/images/dataset/#{@user}.jpg"} style="max-height: 200px" />
+          <img src={"/images/dataset/#{@user}.jpg"} />
       </td>
     </tr>
     """
