@@ -138,7 +138,7 @@ html::-webkit-scrollbar {
 .card td {
   display: block;
   justify-content: center;
-  width: 90%;
+  width: 95%;
   max-width: 500px;
   aspect-ratio: 3.5 / 4.2;
   border: lightgray;
