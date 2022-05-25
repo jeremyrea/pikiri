@@ -9,5 +9,6 @@ erl_crash.dump
 /config/*.secret.exs
 .elixir_ls/
 /priv/static/
+*.db*
 
 sync
