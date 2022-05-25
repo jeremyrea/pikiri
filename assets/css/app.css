@@ -139,7 +139,6 @@ html::-webkit-scrollbar {
 .card {
   display: flex;
   justify-content: center;
-  background-color: white;
 }
 
 .card td {
@@ -156,6 +155,7 @@ html::-webkit-scrollbar {
   padding-left: 5.714285714%;
   padding-right: 5.714285714%;
   margin-bottom: 2em;
+  background: linear-gradient(rgba(236, 236, 236, 0.2), rgb(255, 255, 255) 80%);
   box-shadow: 4px 4px 10px lightgray;
   -webkit-box-shadow: 4px 4px 10px lightgray;
 }
