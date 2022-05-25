@@ -6,7 +6,7 @@ defmodule RowComponent do
     <tr id={"#{@id}"} class="card">
       <td>
           <%= render_slot(@inner_block) %>
-          <img src={"/images/dataset/#{@user}.jpg"} />
+          <img src={"/images/dataset/#{@user}.jpg"} oncontextmenu="return false;" />
       </td>
     </tr>
     """
