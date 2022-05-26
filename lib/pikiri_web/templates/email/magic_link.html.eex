@@ -1,0 +1,10 @@
+<html>
+  <head>
+    <title><%= @email.subject %></title>
+  </head>
+  <body>
+    Hi!
+    <br>
+    <a href="<%= PikiriWeb.Endpoint.url %>?token=<%= @magic_token %>"}>Click the link</a>
+  </body>
+</html>

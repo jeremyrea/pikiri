@@ -11,8 +11,11 @@ config :pikiri,
   ecto_repos: [Pikiri.Repo]
 
 # Configures the endpoint
+host = System.get_env("PHX_HOST") || "localhost"
+port = String.to_integer(System.get_env("PORT") || "4000")
+
 config :pikiri, PikiriWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: host, port: port],
   render_errors: [view: PikiriWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Pikiri.PubSub,
   live_view: [signing_salt: "VlO4kbad"]
@@ -24,7 +27,21 @@ config :pikiri, PikiriWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :pikiri, Pikiri.Mailer, adapter: Swoosh.Adapters.Local
+config :pikiri, Pikiri.Mailer, 
+  adapter: Swoosh.Adapters.SMTP,
+  relay: System.get_env("SMTP_SERVER"),
+  port: System.get_env("SMTP_PORT"),
+  username: System.get_env("SMTP_USERNAME"),
+  password: System.get_env("SMTP_PASSWORD"),
+  tls: :always
+
+config :pikiri, Pikiri.Guardian,
+  issuer: "pikiri",
+  secret_key: "V31AmclpyBV7Oftzex03shXBtQUP/MpKfNO5IzwRpaEps7foNTgF8l008jugyyJS",
+  token_ttl: %{
+    "magic" => {30, :minutes},
+    "access" => {1, :day}
+  }
 
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false
@@ -46,6 +63,9 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+# Configure icons
+config :ex_fontawesome, type: "solid"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
