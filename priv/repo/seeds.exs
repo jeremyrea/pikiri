@@ -9,3 +9,9 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+email = Application.fetch_env!(:pikiri, :admin_email)
+
+Pikiri.Repo.insert!(%Pikiri.Users.User{
+    email: email
+})

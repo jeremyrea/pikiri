@@ -20,6 +20,13 @@ if System.get_env("PHX_SERVER") do
   config :pikiri, PikiriWeb.Endpoint, server: true
 end
 
+admin_email =
+  System.get_env("ADMIN_EMAIL") ||
+    raise """
+    environment variable ADMIN_EMAIL is missing.
+    """
+config :pikiri, admin_email: admin_email
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||
