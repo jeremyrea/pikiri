@@ -1,9 +1,8 @@
 defmodule PikiriWeb.InitAssigns do
   import Phoenix.LiveView
 
-  def on_mount(:user, params, session, socket) do
-    auth_token = get_connect_params(socket)["auth_token"]
-    case Pikiri.Guardian.resource_from_token(auth_token) do
+  def on_mount(:user, _params, _session, socket) do
+    case get_resource(socket) do
     {:ok, resource, claims} -> 
         IO.puts(resource.email)
         {:cont, socket}
@@ -13,9 +12,8 @@ defmodule PikiriWeb.InitAssigns do
     end
   end
 
-  def on_mount(:admin, params, session, socket) do
-    auth_token = get_connect_params(socket)["auth_token"]
-    case Pikiri.Guardian.resource_from_token(auth_token) do
+  def on_mount(:admin, _params, _session, socket) do
+    case get_resource(socket) do
     {:ok, resource, claims} -> 
         case resource.role do
         "admin" -> IO.puts("Is admin")
@@ -26,5 +24,10 @@ defmodule PikiriWeb.InitAssigns do
         IO.puts(error) 
         {:cont, socket}
     end
+  end
+
+  defp get_resource(socket) do
+    get_connect_params(socket)["auth_token"]
+    |> Pikiri.Guardian.resource_from_token()
   end
 end
