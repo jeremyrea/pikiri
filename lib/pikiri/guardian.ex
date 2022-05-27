@@ -12,7 +12,10 @@ defmodule Pikiri.Guardian do
 
   def resource_from_claims(%{"sub" => uuid}) do
     resource = Pikiri.Users.get_user(uuid)
-    {:ok, resource}
+    case resource do
+      nil -> {:error, :not_found}
+      _ -> {:ok, resource}
+    end
   end
   def resource_from_claims(_claims) do
     {:error, :reason_for_error}
