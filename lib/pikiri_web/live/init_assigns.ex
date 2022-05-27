@@ -18,8 +18,8 @@ defmodule PikiriWeb.InitAssigns do
     case Pikiri.Guardian.resource_from_token(auth_token) do
     {:ok, resource, claims} -> 
         case resource.role do
-            "admin" -> IO.puts("Is admin")
-            _ -> IO.puts("Is not admin")
+        "admin" -> IO.puts("Is admin")
+        _ -> IO.puts("Is not admin")
         end
         {:cont, socket}
     {:error, error} ->
