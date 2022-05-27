@@ -28,7 +28,11 @@ import topbar from "../vendor/topbar"
 import {InfiniteScroll} from "./infinite_scroll"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let liveSocket = new LiveSocket("/live", Socket, {hooks: {InfiniteScroll}, params: {_csrf_token: csrfToken}})
+// Handle if not exist
+let authToken = document.cookie.split('; ')
+    .find(row => row.startsWith('pikiri_auth_token='))
+    .split('=')[1];
+let liveSocket = new LiveSocket("/live", Socket, {hooks: {InfiniteScroll}, params: {_csrf_token: csrfToken, auth_token: authToken}})
 
 // Show progress bar on live navigation and form submits
 topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
