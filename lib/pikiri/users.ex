@@ -18,6 +18,13 @@ defmodule Pikiri.Users do
     |> Repo.update()
   end
 
+  @spec set_status(t(), t()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
+  def set_status(user, status) do
+    user
+    |> User.changeset_status(%{status: status})
+    |> Repo.update()
+  end
+
   @spec is_admin?(t()) :: boolean()
   def is_admin?(%{role: "admin"}), do: true
   def is_admin?(_any), do: false

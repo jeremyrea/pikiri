@@ -2,10 +2,17 @@ defmodule PikiriWeb.AuthController do
   use PikiriWeb, :controller
   import Plug.Conn
 
+  alias Pikiri.Users
+  alias Pikiri.Guardian
+
   def index(conn, params) do
     magic_token = params |> Map.get("token")
-    case Pikiri.Guardian.exchange_magic(magic_token) do
-    {:ok, access_token, _claims} -> 
+    case Guardian.exchange_magic(magic_token) do
+    {:ok, access_token, claims} ->
+        case Guardian.resource_from_claims(claims) do
+        {:ok, user} -> Users.set_status(user, "confirmed")
+        end 
+
         ops = [
           sign: false, 
           http_only: false, 
