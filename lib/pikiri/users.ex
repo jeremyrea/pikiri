@@ -29,7 +29,7 @@ defmodule Pikiri.Users do
   end
 
   @spec get_user(Ecto.UUID) :: User
-  def get_user(uuid), do: User |> Repo.get(uuid)
+  def get_user(uuid), do: User |> Repo.get_by(uuid: uuid)
 
   @spec delete_user(Ecto.UUID) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
   def delete_user(uuid), do: %User{uuid: uuid} |> Repo.delete
