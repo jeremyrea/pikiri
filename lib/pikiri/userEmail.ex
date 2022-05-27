@@ -1,7 +1,7 @@
 defmodule Pikiri.UserEmail do
   use Phoenix.Swoosh, view: PikiriWeb.EmailView
 
-  def magic_link_email(user, magic_token, extra_params) do
+  def magic_link_email(user, magic_token, _extra_params) do
     new()
     |> to({nil, user.email})
     |> from({"Pikiri", System.get_env("EMAIL_FROM")})

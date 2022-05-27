@@ -27,7 +27,7 @@ defmodule PikiriWeb.Live.Feed do
   defp fetch(%{assigns: %{page: page, per_page: per}} = socket) do
     values = List.duplicate(nil, per) 
     |> Enum.with_index 
-    |> Enum.map fn {k,v} -> v+(5*(page-1)) end
+    |> Enum.map(fn {_k,v} -> v+(5*(page-1)) end)
 
     assign(socket, users: values)
   end

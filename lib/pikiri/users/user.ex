@@ -1,6 +1,5 @@
 defmodule Pikiri.Users.User do
   use Ecto.Schema
-  import Ecto.Changeset
 
   schema "users" do
     field :uuid, Ecto.UUID, autogenerate: true
@@ -8,6 +7,10 @@ defmodule Pikiri.Users.User do
     field :role, :string, default: "viewer"
 
     timestamps()
+  end
+
+  def changeset(user_or_changeset, _attrs) do
+    user_or_changeset
   end
 
   @spec changeset_role(Ecto.Schema.t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()

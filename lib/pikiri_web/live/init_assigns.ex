@@ -3,7 +3,7 @@ defmodule PikiriWeb.InitAssigns do
 
   def on_mount(:user, _params, _session, socket) do
     case get_resource(socket) do
-    {:ok, resource, claims} -> 
+    {:ok, resource, _claims} -> 
         IO.puts(resource.email)
         {:cont, socket}
     {:error, error} ->
@@ -14,7 +14,7 @@ defmodule PikiriWeb.InitAssigns do
 
   def on_mount(:admin, _params, _session, socket) do
     case get_resource(socket) do
-    {:ok, resource, claims} -> 
+    {:ok, resource, _claims} -> 
         case resource.role do
         "admin" -> IO.puts("Is admin")
         _ -> IO.puts("Is not admin")

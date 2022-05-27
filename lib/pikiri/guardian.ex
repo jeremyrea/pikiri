@@ -2,6 +2,7 @@ defmodule Pikiri.Guardian do
   use Guardian, otp_app: :pikiri
   use SansPassword
 
+  @impl true
   def subject_for_token(%{uuid: uuid}, _claims) do
     sub = to_string(uuid)
     {:ok, sub}
@@ -10,6 +11,7 @@ defmodule Pikiri.Guardian do
     {:error, :reason_for_error}
   end
 
+  @impl true
   def resource_from_claims(%{"sub" => uuid}) do
     resource = Pikiri.Users.get_user(uuid)
     case resource do
