@@ -14,11 +14,19 @@ defmodule PikiriWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", PikiriWeb do
-    import Phoenix.LiveDashboard.Router
+  scope "/auth", PikiriWeb do
     pipe_through :browser
+    
+    forward "/", AuthController, :index
+  end
 
-    live "/", Live.Feed
+  live_session :authenticated, on_mount: {PikiriWeb.InitAssigns, :user} do
+    scope "/", PikiriWeb do
+      import Phoenix.LiveDashboard.Router
+      pipe_through :browser
+
+      live "/", Live.Feed
+    end
   end
 
   # Other scopes may use custom stacks.
