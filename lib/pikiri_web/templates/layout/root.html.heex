@@ -17,9 +17,11 @@
     <header>
       <section class="container">
         <a href="/" class="text">👋</a>
+        <%= if @is_admin? do %>
         <a href="/admin" class="wrapper">
           <FontAwesome.LiveView.icon name="gears" class="settings" />
         </a>
+        <%= end %>
       </section>
     </header>
     <%= @inner_content %>

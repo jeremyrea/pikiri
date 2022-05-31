@@ -10,8 +10,12 @@ defmodule PikiriWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
+  pipeline :authenticated do
+    plug PikiriWeb.Plugs.EnsureRole, [:viewer, :contributor, :admin]
+  end
+
+  pipeline :admin do
+    plug PikiriWeb.Plugs.EnsureRole, :admin
   end
 
   scope "/auth", PikiriWeb do
@@ -20,23 +24,20 @@ defmodule PikiriWeb.Router do
     forward "/", AuthController, :index
   end
 
-  live_session :authenticated, on_mount: {PikiriWeb.InitAssigns, :user} do
-    scope "/", PikiriWeb do
-      import Phoenix.LiveDashboard.Router
-      pipe_through :browser
+  scope "/", PikiriWeb do
+    import Phoenix.LiveDashboard.Router
+    pipe_through [:browser, :authenticated]
 
-      live "/", Live.Feed
-    end
+    live "/", Live.Feed
   end
 
-  live_session :admins, on_mount: {PikiriWeb.InitAssigns, :admin} do
-    scope "/admin", PikiriWeb do
-      import Phoenix.LiveDashboard.Router
-      pipe_through :browser
+  scope "/admin", PikiriWeb do
+    import Phoenix.LiveDashboard.Router
+    pipe_through [:browser, :admin]
 
-      live "/", Live.Admin
-    end
+    live "/", Live.Admin
   end
+
   # Other scopes may use custom stacks.
   # scope "/api", PikiriWeb do
   #   pipe_through :api
