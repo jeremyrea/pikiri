@@ -194,7 +194,7 @@ svg.settings {
   margin-left: 1em;
 }
 
-td.separator {
+.user-list td.separator {
   display: none;
 }
 
