@@ -9,9 +9,11 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+alias Pikiri.Users
 
 email = Application.fetch_env!(:pikiri, :admin_email)
 
-Pikiri.Repo.insert!(%Pikiri.Users.User{
-    email: email
-})
+{ :ok, user } = Users.create_user(%{email: email, role: "admin"})
+
+# Remove this when login page is setup
+{:ok, _magic_token, _claims} = Pikiri.Guardian.send_magic_link(user)
