@@ -29,6 +29,14 @@ defmodule PikiriWeb.Router do
     end
   end
 
+  live_session :admins, on_mount: {PikiriWeb.InitAssigns, :admin} do
+    scope "/admin", PikiriWeb do
+      import Phoenix.LiveDashboard.Router
+      pipe_through :browser
+
+      live "/", Live.Admin
+    end
+  end
   # Other scopes may use custom stacks.
   # scope "/api", PikiriWeb do
   #   pipe_through :api

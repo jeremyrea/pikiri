@@ -4,7 +4,7 @@ defmodule PikiriWeb.Live.Feed do
   def render(assigns) do
     ~H"""
     <table>
-      <tbody id="users" phx-update="append">
+      <tbody id="photos" phx-update="append">
         <%= for {user, index} <- Enum.with_index(@users) do %>
           <.live_component module={RowComponent} id={user} user={user}>
             <%= if index == length(@users) - 1 do %>

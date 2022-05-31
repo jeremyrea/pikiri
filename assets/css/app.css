@@ -129,11 +129,24 @@ html::-webkit-scrollbar {
 
 /* iOS scrollbar still appears... */
 
-.header {
+a.text {
   font-size: xx-large;
   display: flex;
   justify-content: center;
   width: 100%;
+}
+
+a.wrapper {
+  display: contents;
+}
+
+svg {
+  fill: royalblue;
+}
+
+svg.settings {
+  width: 2em;
+  position: absolute;
 }
 
 .card {
@@ -163,4 +176,70 @@ html::-webkit-scrollbar {
 .card td img {
   width: 100%;
   aspect-ratio: 1;
+}
+
+.users {
+  width: 100%;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.users .user-add {
+  display: flex;
+  justify-content: center;
+}
+
+.users form button {
+  margin-left: 1em;
+}
+
+td.separator {
+  display: none;
+}
+
+@media only screen and (max-width: 30em) {
+  .user-list {
+    width: 100%;
+  }
+
+  .user-list thead th {
+    display: none;
+  }
+
+  .user-list td > * {
+    float: right;
+  }
+
+  .user-list tbody, thead, tr {
+    width: 100%;
+    display: inline-block;
+  }
+
+  .user-list td, th {
+      display: block;
+      clear: both;
+      padding: 0;
+  }
+
+  .user-list td {
+    margin-bottom: 1em;
+    height: 1.5em;
+  }
+
+  .user-list td[data-th]:before  {
+      content: attr(data-th);
+      float: left;
+      font-weight: 500;
+  }
+
+  .user-list td.separator {
+    display: block;
+    height: 1px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(0, 0, 0, 0.2);
+    margin-top: 2.5em;
+  }
 }

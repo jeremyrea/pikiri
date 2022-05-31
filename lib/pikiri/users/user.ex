@@ -10,8 +10,15 @@ defmodule Pikiri.Users.User do
     timestamps()
   end
 
-  def changeset(user_or_changeset, _attrs) do
+  def changeset(user_or_changeset, attrs \\ %{}) do
     user_or_changeset
+    |> Ecto.Changeset.cast(attrs, [:email, :role, :status])
+  end
+
+  @spec changeset_email(Ecto.Schema.t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
+  def changeset_email(user_or_changeset, attrs) do
+    user_or_changeset
+    |> Ecto.Changeset.cast(attrs, [:email])
   end
 
   @spec changeset_role(Ecto.Schema.t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
