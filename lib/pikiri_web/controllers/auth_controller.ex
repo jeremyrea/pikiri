@@ -21,7 +21,7 @@ defmodule PikiriWeb.AuthController do
           same_site: "strict"
         ]
         put_resp_cookie(conn, "pikiri_auth_token", access_token, ops)
-        |> Phoenix.Controller.redirect(to: Router.get_route)
+        |> Phoenix.Controller.redirect(to: "/")
         |> Plug.Conn.halt()
     {:error, _error} ->
         conn
