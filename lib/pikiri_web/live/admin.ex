@@ -14,7 +14,7 @@ defmodule PikiriWeb.Live.Admin do
     ~H"""
     <div class="users">
       <.form let={f} for={@invitation} phx-submit="invite" class="user-add">
-        <%= text_input f, :email, [placeholder: gettext("email")] %>
+        <%= text_input f, :email, [placeholder: gettext("email address"), type: "email"] %>
         <%= submit gettext("Add user") %>
       </.form>
       <table class="user-list">
