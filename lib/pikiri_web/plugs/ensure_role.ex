@@ -45,7 +45,7 @@ defmodule PikiriWeb.Plugs.EnsureRole do
   defp maybe_halt(true, conn), do: conn
   defp maybe_halt(_any, conn) do
     conn
-    |> Controller.redirect(to: "/")
+    |> Controller.redirect(to: Routes.login_path(conn, :new))
     |> halt()
   end
 end

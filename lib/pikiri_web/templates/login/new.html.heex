@@ -1,0 +1,10 @@
+<div class="login">
+    <div class="icons">
+        <span>👨‍👩‍👧</span>
+        <span>📸</span>
+    </div>
+    <%= form_for @conn, Routes.login_path(@conn, :create), fn f -> %>
+        <%= text_input f, :email, [placeholder: gettext("email address"), type: "email"] %>
+        <%= submit gettext("Send login link") %>
+    <% end %>
+</div>

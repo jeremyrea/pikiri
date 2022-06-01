@@ -2,6 +2,7 @@ defmodule PikiriWeb.AuthController do
   use PikiriWeb, :controller
   import Plug.Conn
 
+  alias PikiriWeb.Router.Helpers, as: Routes
   alias Pikiri.Users
   alias Pikiri.Guardian
 
@@ -11,6 +12,7 @@ defmodule PikiriWeb.AuthController do
     {:ok, access_token, claims} ->
         case Guardian.resource_from_claims(claims) do
         {:ok, user} -> Users.set_status(user, "confirmed")
+        {:error, :not_found} -> IO.puts("User not found from magic token")
         end 
 
         ops = [
@@ -19,17 +21,11 @@ defmodule PikiriWeb.AuthController do
           same_site: "strict"
         ]
         put_resp_cookie(conn, "pikiri_auth_token", access_token, ops)
-        |> Phoenix.Controller.redirect(to: "/")
+        |> Phoenix.Controller.redirect(to: Router.get_route)
         |> Plug.Conn.halt()
-    {:error, :invalid_token} ->
-        # Redirect and halt
+    {:error, _error} ->
         conn
-        |> Phoenix.Controller.redirect(to: "/")
-        |> Plug.Conn.halt()
-    {:error, :token_expired} ->
-        # Redirect and halt
-        conn
-        |> Phoenix.Controller.redirect(to: "/")
+        |> Phoenix.Controller.redirect(to: Routes.login_path(conn, :new))
         |> Plug.Conn.halt()
     end
   end

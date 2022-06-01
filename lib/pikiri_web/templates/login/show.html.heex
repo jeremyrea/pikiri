@@ -1,0 +1,11 @@
+<div class="login">
+    <div class="icons">
+        <span>📧</span>
+    </div>
+    <p>
+        <%= gettext("An email has been sent to<br><b>%{email}</b>", email: @email) |> raw() %>
+    </p>
+    <p>
+        <%= gettext("Please click the link inside to login.") %>
+    </p>
+</div>

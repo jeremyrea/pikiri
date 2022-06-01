@@ -14,6 +14,3 @@ alias Pikiri.Users
 email = Application.fetch_env!(:pikiri, :admin_email)
 
 { :ok, user } = Users.create_user(%{email: email, role: "admin"})
-
-# Remove this when login page is setup
-{:ok, _magic_token, _claims} = Pikiri.Guardian.send_magic_link(user)

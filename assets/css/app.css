@@ -127,6 +127,35 @@ html::-webkit-scrollbar {
   display: none;  /* Safari and Chrome */
 }
 
+.login {
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20%;
+  text-align: center;
+}
+
+.login .icons {
+  display: flex;
+  justify-content: center;
+  font-size: 5em;
+}
+
+.login input {
+  text-align: center;
+}
+
+.login button {
+  width: 100%;
+}
+
+@media only screen and (max-width: 30em) {
+  .login {
+    width: 80%;
+    margin-top: 40%;
+  }
+}
+
 /* iOS scrollbar still appears... */
 
 a.text {

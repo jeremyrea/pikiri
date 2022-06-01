@@ -5,34 +5,39 @@ defmodule PikiriWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, {PikiriWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
 
+  pipeline :public do
+    plug :put_root_layout, {PikiriWeb.LayoutView, :public}
+  end
+
   pipeline :authenticated do
     plug PikiriWeb.Plugs.EnsureRole, [:viewer, :contributor, :admin]
+    plug :put_root_layout, {PikiriWeb.LayoutView, :root}
   end
 
   pipeline :admin do
     plug PikiriWeb.Plugs.EnsureRole, :admin
-  end
-
-  scope "/auth", PikiriWeb do
-    pipe_through :browser
-    
-    forward "/", AuthController, :index
+    plug :put_root_layout, {PikiriWeb.LayoutView, :root}
   end
 
   scope "/", PikiriWeb do
-    import Phoenix.LiveDashboard.Router
+    pipe_through [:browser, :public]
+    
+    get "/login", LoginController, :new
+    post "/login", LoginController, :create
+    get "/auth", AuthController, :index
+  end
+
+  scope "/", PikiriWeb do
     pipe_through [:browser, :authenticated]
 
     live "/", Live.Feed
   end
 
   scope "/admin", PikiriWeb do
-    import Phoenix.LiveDashboard.Router
     pipe_through [:browser, :admin]
 
     live "/", Live.Admin
