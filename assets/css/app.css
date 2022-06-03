@@ -127,6 +127,15 @@ html::-webkit-scrollbar {
   display: none;  /* Safari and Chrome */
 }
 
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
 .login {
   width: 40%;
   margin-left: auto;
@@ -153,6 +162,94 @@ html::-webkit-scrollbar {
   .login {
     width: 80%;
     margin-top: 40%;
+  }
+}
+
+.feed {
+  display: flex;
+  justify-content: center;
+}
+
+.feed .actions {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  bottom: 0;
+  box-shadow: 4px -1px 10px lightgray;
+  -webkit-box-shadow: 4px -1px 10px lightgray;
+  height: 6em;
+  /* Not supported by firefox */
+  -webkit-backdrop-filter: blur(12px); 
+  backdrop-filter: blur(12px); 
+}
+
+.feed .actions ul {
+  margin-top: 1em;
+  list-style-type: none;
+}
+
+.feed .actions svg {
+  width: 4em;
+}
+
+.feed .actions svg:hover {
+  cursor: pointer;
+}
+
+.feed .actions svg:active {
+  width: 3.5em;
+}
+
+.feed .actions .upload-input {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.feed .actions .upload-progress {
+  margin-top: 2em;
+}
+
+.feed .actions .upload .preview {
+  background-color: wheat;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 60%
+}
+
+.feed .actions .upload .preview figure {
+  width: 80%;
+  aspect-ratio: 1;
+}
+
+.feed .actions .upload .preview figure img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload button {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media only screen and (max-width: 30em) {
+  .feed .actions {
+    height: 4em;
+  }
+
+  .feed .actions svg {
+    width: 2em;
+  }
+
+  .feed .actions .upload .preview {
+    width: 80%;
   }
 }
 
