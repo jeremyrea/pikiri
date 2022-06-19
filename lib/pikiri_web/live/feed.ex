@@ -58,6 +58,17 @@ defmodule PikiriWeb.Live.Feed do
   end
 
   @impl Phoenix.LiveView
+  def handle_event("cancel-upload", %{"ref" => ref}, socket) do
+    {:noreply, 
+    socket
+    |> assign(show_upload_modal: false)
+    |> cancel_upload(:photo, ref)}
+  end
+  def handle_event("cancel-upload", %{}, socket) do
+    {:noreply, socket |> assign(show_upload_modal: false)}
+  end
+
+  @impl Phoenix.LiveView
   def handle_event("save", _params, socket) do
     uploaded_files =
       consume_uploaded_entries(socket, :photo, fn %{path: path}, _entry ->
@@ -78,9 +89,5 @@ defmodule PikiriWeb.Live.Feed do
 
   def handle_event("open-upload-modal", _params, socket) do
     {:noreply, socket |> assign(show_upload_modal: true)}
-  end
-
-  def handle_event("close-upload-modal", _params, socket) do
-    {:noreply, socket |> assign(show_upload_modal: false)}
   end
 end

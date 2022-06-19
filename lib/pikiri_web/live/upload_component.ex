@@ -21,6 +21,7 @@ defmodule UploadComponent do
               <% end %>
             </figure>
             <button type="submit">Submit</button>
+            <button phx-click="cancel-upload" phx-value-ref={get_ref(@uploads.photo.entries)}>Cancel</button>
           </div>
         <% end %>          
         <%= for err <- upload_errors(@uploads.photo) do %>
@@ -29,6 +30,14 @@ defmodule UploadComponent do
       </form>
     </div>
     """
+  end
+
+  # Cancel does not work for some reason
+  defp get_ref(entries) do
+    case List.first(entries) do
+      nil -> nil
+      entry -> entry.ref |> IO.puts
+    end
   end
 
   defp error_to_string(:too_large), do: gettext("Too large")
