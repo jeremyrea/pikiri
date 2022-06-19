@@ -1,6 +1,9 @@
 defmodule PikiriWeb.Live.Feed do
   use PikiriWeb, :live_view
 
+  alias Pikiri.Posts
+  alias Pikiri.Users
+
   def render(assigns) do
     ~H"""
     <div class="feed">
@@ -64,9 +67,12 @@ defmodule PikiriWeb.Live.Feed do
         {:ok, Routes.static_path(socket, "/uploads/#{Path.basename(dest)}")}
       end)
 
+    user_id = socket.assigns.current_user    
+    Posts.create_post(%{user_id: user_id})
+
     {:noreply, 
     socket 
-    |> assign(show_upload_modal: false) 
+    |> assign(show_upload_modal: false)
     |> update(:uploaded_files, &(&1 ++ uploaded_files))}
   end
 
