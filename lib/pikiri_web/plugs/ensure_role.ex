@@ -6,7 +6,7 @@ defmodule PikiriWeb.Plugs.EnsureRole do
       plug MyAppWeb.EnsureRolePlug, :admin
       plug MyAppWeb.EnsureRolePlug, ~w(user admin)a
   """
-  import Plug.Conn, only: [halt: 1, assign: 3]
+  import Plug.Conn, only: [halt: 1, assign: 3, put_session: 3]
 
   alias PikiriWeb.Router.Helpers, as: Routes
   alias Phoenix.Controller
@@ -24,7 +24,7 @@ defmodule PikiriWeb.Plugs.EnsureRole do
     {:ok, resource, claims} -> 
         has_role?(resource, roles) 
         |> maybe_halt(conn)
-        |> assign_helpers(resource.role)
+        |> assign_helpers(resource)
     {:error, error} -> 
         has_role?(nil, roles) |> maybe_halt(conn)
     end
@@ -36,10 +36,11 @@ defmodule PikiriWeb.Plugs.EnsureRole do
   defp has_role?(%{role: role}, role), do: true
   defp has_role?(_user, _role), do: false
 
-  defp assign_helpers(conn, role) do
+  defp assign_helpers(conn, resource) do
     conn
-    |> assign(:is_admin?, role == "admin")
-    |> assign(:is_contributor?, role == "contributor")
+    |> assign(:is_admin?, resource.role == "admin")
+    |> assign(:is_contributor?, resource.role == "contributor")
+    |> put_session(:user_id, resource.id)
   end
 
   defp maybe_halt(true, conn), do: conn
