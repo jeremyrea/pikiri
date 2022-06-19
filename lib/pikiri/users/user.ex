@@ -1,11 +1,15 @@
 defmodule Pikiri.Users.User do
   use Ecto.Schema
 
+  alias Pikiri.Posts.Post
+
   schema "users" do
     field :uuid, Ecto.UUID, autogenerate: true
     field :email, :string
     field :role, :string, default: "viewer"
     field :status, :string, default: "pending"
+
+    has_many :posts, Post
 
     timestamps()
   end
