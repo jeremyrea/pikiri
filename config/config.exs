@@ -46,6 +46,10 @@ config :pikiri, Pikiri.Guardian,
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false
 
+config :waffle,
+  storage: Waffle.Storage.Local,
+  asset_host: {:system, "ASSET_HOST"}
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.14.29",

@@ -52,7 +52,11 @@ defmodule Pikiri.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:ex_fontawesome, "~> 0.7.1"}
+      {:ex_fontawesome, "~> 0.7.1"},
+      {:polymorphic_embed, "~> 3.0.2"},
+      {:waffle, "~> 1.1"},
+      {:waffle_ecto, "~> 0.0"},
+      {:mime, "~> 2.0"}
     ]
   end
 

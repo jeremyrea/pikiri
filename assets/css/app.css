@@ -215,10 +215,10 @@ html::-webkit-scrollbar {
   background-color: wheat;
   position: fixed;
   left: 50%;
-  top: 50%;
+  top: -300%;
   transform: translate(-50%, -50%);
   width: 50%;
-  height: 60%
+  /* height: 60% */
 }
 
 .feed .actions .upload .preview figure {
