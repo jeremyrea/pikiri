@@ -10,4 +10,13 @@ defmodule Pikiri.Posts do
     |> Post.changeset(params)
     |> Repo.insert()
   end
+
+  @spec get_posts(Ecto.timestamps, integer) :: [Post]
+  def get_posts(from, take) do
+    Post
+    |> where([p], p.inserted_at < ^from)
+    |> limit(^take)
+    |> order_by([p], desc: p.inserted_at)
+    |> Repo.all()
+  end
 end

@@ -1,16 +1,16 @@
 export const InfiniteScroll = {
-    page() {
-      return this.el.dataset.page;
+    cursor() {
+      return this.el.dataset.cursor;
     },
     loadMore(entries) {
       const target = entries[0];
-      if (target.isIntersecting && this.pending == this.page()) {
-        this.pending = this.page() + 1;
-        this.pushEvent("load-more", {});
+      if (target.isIntersecting && this.pending == this.cursor()) {
+        this.pending = this.cursor();
+        this.pushEvent("load-more", {cursor: this.cursor()});
       }
     },
     mounted() {
-      this.pending = this.page();
+      this.pending = this.cursor();
       this.observer = new IntersectionObserver(
         (entries) => this.loadMore(entries),
         {
@@ -25,6 +25,6 @@ export const InfiniteScroll = {
       this.observer.unobserve(this.el);
     },
     updated() {
-      this.pending = this.page();
+      this.pending = this.cursor();
     },
   };

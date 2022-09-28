@@ -3,6 +3,7 @@ defmodule PikiriWeb.Live.Feed do
 
   alias Pikiri.Posts
   alias Pikiri.Users
+  alias Pikiri.Uploaders.PhotoUploader
 
   def render(assigns) do
     ~H"""
@@ -12,7 +13,7 @@ defmodule PikiriWeb.Live.Feed do
           <%= for {post, index} <- Enum.with_index(@posts) do %>
             <.live_component module={RowComponent} id={post.id} post={post}>
               <%= if index == length(@posts) - 1 do %>
-                <div id="InfiniteScroll" phx-hook="InfiniteScroll" data-page={@page}></div>
+                <div id="InfiniteScroll" phx-hook="InfiniteScroll" data-cursor={post.inserted_at}></div>
               <% end %>
             </.live_component>
           <% end %>
@@ -33,26 +34,22 @@ defmodule PikiriWeb.Live.Feed do
   def mount(_params, session, socket) do
     {:ok,
      socket
-     |> assign(page: 1, per_page: 5)
+     |> assign(:cursor, DateTime.utc_now)
+     |> assign(:per_page, 1)
      |> assign(:uploaded_files, [])
      |> assign(:show_upload_modal, false)
      |> assign(:current_user, session["user_id"])
-     |> allow_upload(:photo, accept: ~w(.jpg .jpeg .png), max_entries: 1)
+     |> allow_upload(:photo, accept: PhotoUploader.extension_whitelist, max_entries: 1)
      |> fetch(), temporary_assigns: [posts: []]}
   end
 
-  defp fetch(%{assigns: %{page: page, per_page: take}} = socket) do
-    # values = List.duplicate(nil, per) 
-    # |> Enum.with_index 
-    # |> Enum.map(fn {_k,v} -> v+(5*(page-1)) end)
-    posts = Posts.get_posts(DateTime.utc_now, take)
-
+  defp fetch(%{assigns: %{cursor: date_from, per_page: take}} = socket) do
     socket
-    |> assign(:posts, posts)
+    |> assign(:posts, Posts.get_posts(date_from, take))
   end
 
-  def handle_event("load-more", _, %{assigns: assigns} = socket) do
-    {:noreply, socket |> assign(page: assigns.page + 1) |> fetch()}
+  def handle_event("load-more", %{"cursor" => cursor}, %{assigns: assigns} = socket) do
+    {:noreply, socket |> assign(cursor: cursor) |> fetch()}
   end
 
   def handle_event("validate", _params, socket) do
@@ -61,7 +58,7 @@ defmodule PikiriWeb.Live.Feed do
 
   @impl Phoenix.LiveView
   def handle_event("cancel-upload", %{"ref" => ref}, socket) do
-    {:noreply, 
+    {:noreply,
     socket
     |> assign(show_upload_modal: false)
     |> cancel_upload(:photo, ref)}
@@ -72,13 +69,13 @@ defmodule PikiriWeb.Live.Feed do
 
   @impl Phoenix.LiveView
   def handle_event("save", _params, socket) do
-  user_id = socket.assigns.current_user 
+  user_id = socket.assigns.current_user
     uploaded_files =
       consume_uploaded_entries(socket, :photo, fn %{path: path}, entry ->
-        file_extension = MIME.extensions(entry.client_type)
+        [file_extension | _] = MIME.extensions(entry.client_type)
         file_name = "#{entry.uuid}.#{file_extension}"
-        dest = Path.join([:code.priv_dir(:pikiri), "static", "uploads", file_name])
-  
+        dest = Path.join([PhotoUploader.storage_dir, file_name])
+
         File.cp!(path, dest)
         {:ok, dest}
       end)
@@ -94,17 +91,17 @@ defmodule PikiriWeb.Live.Feed do
     }
 
     result = Posts.create_post(%{user_id: user_id, content: content})
-       
+
     case result do
-      {:ok, new_post} -> 
-        {:noreply, 
-          socket 
+      {:ok, new_post} ->
+        {:noreply,
+          socket
           |> assign(show_upload_modal: false)
           |> assign(:uploaded_files, [])}
-      {:error, changeset} -> 
+      {:error, changeset} ->
         IO.inspect changeset
-        {:noreply, 
-        socket 
+        {:noreply,
+        socket
         |> assign(show_upload_modal: false)}
     end
   end

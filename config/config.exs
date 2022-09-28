@@ -8,7 +8,8 @@
 import Config
 
 config :pikiri,
-  ecto_repos: [Pikiri.Repo]
+  ecto_repos: [Pikiri.Repo],
+  uploads_directory: "/app/uploads" # Make docker env variable
 
 # Configures the endpoint
 host = System.get_env("PHX_HOST") || "localhost"
@@ -27,7 +28,7 @@ config :pikiri, PikiriWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :pikiri, Pikiri.Mailer, 
+config :pikiri, Pikiri.Mailer,
   adapter: Swoosh.Adapters.SMTP,
   relay: System.get_env("SMTP_SERVER"),
   port: System.get_env("SMTP_PORT"),
