@@ -39,7 +39,7 @@ defmodule PikiriWeb.Live.Feed do
      |> assign(:uploaded_files, [])
      |> assign(:show_upload_modal, false)
      |> assign(:current_user, session["user_id"])
-     |> allow_upload(:photo, accept: PhotoUploader.extension_whitelist, max_entries: 1)
+     |> allow_upload(:photo, accept: ~w(.jpg .jpeg .png), max_entries: 1)
      |> fetch(), temporary_assigns: [posts: []]}
   end
 
