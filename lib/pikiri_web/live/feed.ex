@@ -9,7 +9,7 @@ defmodule PikiriWeb.Live.Feed do
     ~H"""
     <div class="feed">
       <table>
-        <tbody id="photos" phx-update="append">
+        <tbody id="photos" phx-update={@update_method}>
           <%= for {post, index} <- Enum.with_index(@posts) do %>
             <.live_component module={RowComponent} id={post.id} post={post}>
               <%= if index == length(@posts) - 1 do %>
@@ -36,6 +36,7 @@ defmodule PikiriWeb.Live.Feed do
      socket
      |> assign(:cursor, DateTime.utc_now)
      |> assign(:per_page, 1)
+     |> assign(:update_method, "append")
      |> assign(:uploaded_files, [])
      |> assign(:show_upload_modal, false)
      |> assign(:current_user, session["user_id"])
@@ -46,6 +47,7 @@ defmodule PikiriWeb.Live.Feed do
   defp fetch(%{assigns: %{cursor: date_from, per_page: take}} = socket) do
     socket
     |> assign(:posts, Posts.get_posts(date_from, take))
+    |> assign(:update_method, "append")
   end
 
   def handle_event("load-more", %{"cursor" => cursor}, %{assigns: assigns} = socket) do
@@ -97,7 +99,9 @@ defmodule PikiriWeb.Live.Feed do
         {:noreply,
           socket
           |> assign(show_upload_modal: false)
-          |> assign(:uploaded_files, [])}
+          |> assign(:uploaded_files, [])
+          |> assign(:update_method, "prepend")
+          |> update(:posts, fn posts -> [new_post | posts] end)}
       {:error, changeset} ->
         IO.inspect changeset
         {:noreply,
