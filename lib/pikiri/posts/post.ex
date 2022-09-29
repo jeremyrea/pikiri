@@ -19,6 +19,8 @@ defmodule Pikiri.Posts.Post do
       on_replace: :update
 
     timestamps()
+
+    field(:liked, :boolean, virtual: true)
   end
 
   def changeset(post_or_changeset, attrs \\ %{}) do

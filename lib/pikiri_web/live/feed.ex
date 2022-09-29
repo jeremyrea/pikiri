@@ -45,8 +45,9 @@ defmodule PikiriWeb.Live.Feed do
   end
 
   defp fetch(%{assigns: %{cursor: date_from, per_page: take}} = socket) do
+    user_id = socket.assigns.current_user
     socket
-    |> assign(:posts, Posts.get_posts(date_from, take))
+    |> assign(:posts, Posts.get_posts(date_from, take, user_id))
     |> assign(:update_method, "append")
   end
 
@@ -112,5 +113,20 @@ defmodule PikiriWeb.Live.Feed do
 
   def handle_event("open-upload-modal", _params, socket) do
     {:noreply, socket |> assign(show_upload_modal: true)}
+  end
+
+  def handle_event("toggle-like", %{"post_id" => str_post_id, "liked" => str_liked}, socket) do
+    user_id = socket.assigns.current_user
+    post_id = String.to_integer(str_post_id)
+    liked = if String.to_integer(str_liked) == 0, do: false, else: true
+
+    case liked do
+      true -> Posts.unlike_post(user_id, post_id)
+      false -> Posts.like_post(user_id, post_id)
+    end
+
+    updated_post = Posts.get_post(post_id, user_id)
+
+    {:noreply, socket |> update(:posts, fn posts -> [updated_post] end)}
   end
 end

@@ -304,6 +304,12 @@ svg.settings {
   aspect-ratio: 1;
 }
 
+.card td .like {
+  fill: rgb(255, 75, 75);
+  width: 2em;
+  float: right;
+}
+
 .users {
   width: 100%;
   max-width: 500px;
