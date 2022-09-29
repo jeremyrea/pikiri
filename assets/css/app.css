@@ -233,6 +233,22 @@ html::-webkit-scrollbar {
   object-fit: cover;
 }
 
+.toast {
+  background-color: rgba(9, 9, 9, 0.8);
+  color: white;
+  border-radius: 10px;
+  position: fixed;
+  bottom: 7em;
+  padding: 1em;
+  font-weight: normal;
+}
+
+.toast span {
+  cursor: pointer;
+  color: royalblue;
+  padding-right: 0.5em;
+}
+
 .upload button {
   display: block;
   margin-left: auto;

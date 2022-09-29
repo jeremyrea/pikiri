@@ -7,6 +7,19 @@ defmodule PikiriWeb.Live.Feed do
 
   def render(assigns) do
     ~H"""
+    <%= if @new_posts_available do %>
+      <div class="toast">
+        <%= gettext("New post available!") %>
+        <div>
+          <span phx-click="user-reload" phx-value-ignore="0">
+            <%= gettext("View") %>
+          </span>
+          <span phx-click="user-reload" phx-value-ignore="1">
+            <%= gettext("Dismiss") %>
+          </span>
+        </div>
+      </div>
+    <% end %>
     <div class="feed">
       <table>
         <tbody id="photos" phx-update={@update_method}>
@@ -32,6 +45,8 @@ defmodule PikiriWeb.Live.Feed do
 
   @impl Phoenix.LiveView
   def mount(_params, session, socket) do
+    if connected?(socket), do: Phoenix.PubSub.subscribe(Pikiri.PubSub, "new_post")
+
     {:ok,
      socket
      |> assign(:cursor, DateTime.utc_now)
@@ -39,6 +54,7 @@ defmodule PikiriWeb.Live.Feed do
      |> assign(:update_method, "append")
      |> assign(:uploaded_files, [])
      |> assign(:show_upload_modal, false)
+     |> assign(:new_posts_available, false)
      |> assign(:current_user, session["user_id"])
      |> allow_upload(:photo, accept: ~w(.jpg .jpeg .png), max_entries: 1)
      |> fetch(), temporary_assigns: [posts: []]}
@@ -49,6 +65,31 @@ defmodule PikiriWeb.Live.Feed do
     socket
     |> assign(:posts, Posts.get_posts(date_from, take, user_id))
     |> assign(:update_method, "append")
+  end
+
+  def handle_info({:new_post, %{user_id: uploader_id, post_id: post_id}} = info, socket) do
+    user_id = socket.assigns.current_user
+    new_post = Posts.get_post(post_id, user_id)
+
+    {:noreply,
+    socket
+    |> assign(:new_posts_available, (uploader_id != user_id) || socket.assigns.new_posts_available)
+    |> assign(:update_method, "prepend")
+    |> update(:posts, fn posts -> [new_post | posts] end)
+  }
+  end
+
+  def handle_event("user-reload", %{"ignore" => str_ignore}, socket) do
+    case str_ignore do
+      "1" -> {:noreply, socket |> assign(:new_posts_available, false)}
+      "0" ->
+        {
+          :noreply,
+          socket
+          |> assign(:new_posts_available, false)
+          |> push_event("scroll-to-top", %{})
+        }
+    end
   end
 
   def handle_event("load-more", %{"cursor" => cursor}, %{assigns: assigns} = socket) do
@@ -97,12 +138,11 @@ defmodule PikiriWeb.Live.Feed do
 
     case result do
       {:ok, new_post} ->
+        Phoenix.PubSub.broadcast(Pikiri.PubSub, "new_post", {:new_post, %{user_id: user_id, post_id: new_post.id}})
         {:noreply,
           socket
           |> assign(show_upload_modal: false)
-          |> assign(:uploaded_files, [])
-          |> assign(:update_method, "prepend")
-          |> update(:posts, fn posts -> [new_post | posts] end)}
+          |> assign(:uploaded_files, [])}
       {:error, changeset} ->
         IO.inspect changeset
         {:noreply,
