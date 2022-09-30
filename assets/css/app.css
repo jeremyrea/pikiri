@@ -327,6 +327,12 @@ svg.settings {
   float: right;
 }
 
+.card .timestamp {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 15px;
+  float: left;
+}
+
 .users {
   width: 100%;
   max-width: 500px;
