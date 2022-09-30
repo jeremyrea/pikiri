@@ -13,7 +13,7 @@ defmodule RowComponent do
                 <% nil -> %>
                   <span>No image</span>
                 <% _ -> %>
-                  <img src={"/uploads/posts/#{@post.content.photo.file_name}"} oncontextmenu="return false;" />
+                  <img src={"/uploads/posts/#{@post.content.photo.file_name}"} loading="lazy" oncontextmenu="return false;" />
               <%end%>
             <% :text -> %>
               <% @post.content.text %>
