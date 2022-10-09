@@ -24,6 +24,9 @@ defmodule RowComponent do
           <div phx-click="toggle-like" phx-value-post_id={@post.id} phx-value-liked={if @post.liked, do: 1, else: 0}>
             <FontAwesome.LiveView.icon name="heart" type={if @post.liked, do: "solid", else: "regular"} class="like" />
           </div>
+          <div class="caption">
+            <%= @post.content.caption %>
+          </div>
       </td>
     </tr>
     """

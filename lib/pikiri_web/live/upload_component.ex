@@ -20,10 +20,13 @@ defmodule UploadComponent do
                 <% end %>
               <% end %>
             </figure>
+            <.form let={f} for={@changeset} phx-submit="save">
+              <%= text_input f, :caption, [class: "caption", placeholder: gettext("Caption"), maxlength: 80] %>
+            </.form>
             <button type="submit">Submit</button>
             <button phx-click="cancel-upload" phx-value-ref={get_ref(@uploads.photo.entries)}>Cancel</button>
           </div>
-        <% end %>          
+        <% end %>
         <%= for err <- upload_errors(@uploads.photo) do %>
           <p class="alert alert-danger"><%= error_to_string(err) %></p>
         <% end %>

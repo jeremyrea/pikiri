@@ -35,7 +35,7 @@ defmodule PikiriWeb.Live.Feed do
       <div class="actions">
         <ul>
           <li>
-            <.live_component module={UploadComponent} id="upload" uploads={@uploads} show={@show_upload_modal} />
+            <.live_component module={UploadComponent} id="upload" uploads={@uploads} changeset={@changeset} show={@show_upload_modal} />
           </li>
         </ul>
       </div>
@@ -50,12 +50,13 @@ defmodule PikiriWeb.Live.Feed do
     {:ok,
      socket
      |> assign(:cursor, DateTime.utc_now)
-     |> assign(:per_page, 1)
+     |> assign(:per_page, 10)
      |> assign(:update_method, "append")
      |> assign(:uploaded_files, [])
      |> assign(:show_upload_modal, false)
      |> assign(:new_posts_available, false)
      |> assign(:current_user, session["user_id"])
+     |> assign(:changeset, Posts.Post.changeset(%Posts.Post{}))
      |> allow_upload(:photo, accept: ~w(.jpg .jpeg .png), max_entries: 1)
      |> fetch(), temporary_assigns: [posts: []]}
   end
@@ -112,8 +113,8 @@ defmodule PikiriWeb.Live.Feed do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("save", _params, socket) do
-  user_id = socket.assigns.current_user
+  def handle_event("save", %{"post" => %{"caption" => caption}}, socket) do
+    user_id = socket.assigns.current_user
     uploaded_files =
       consume_uploaded_entries(socket, :photo, fn %{path: path}, entry ->
         [file_extension | _] = MIME.extensions(entry.client_type)
@@ -127,11 +128,13 @@ defmodule PikiriWeb.Live.Feed do
     [new_file | _] = uploaded_files
 
     {:ok, binary} = File.read(new_file)
+
     content = %{
       photo: %{
         filename: Path.basename(new_file),
         binary: binary
-      }
+      },
+      caption: caption
     }
 
     result = Posts.create_post(%{user_id: user_id, content: content})
