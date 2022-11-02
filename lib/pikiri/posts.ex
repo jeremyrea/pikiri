@@ -6,6 +6,14 @@ defmodule Pikiri.Posts do
 
   @spec create_post(map()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
   def create_post(params) do
+    content_length = get_in(params, [:content, :caption]) |> String.length()
+    exp_factor = 1 - (content_length / 100)
+    max_angle = (:math.exp(exp_factor) * exp_factor * 10) |> Kernel.trunc()
+
+    angle = :rand.uniform(max_angle)
+    sign = (:rand.uniform(1) * 2) - 1
+    put_in(params, [:content, :caption_rotation], angle * sign)
+
     %Post{}
     |> Post.changeset(params)
     |> Repo.insert()
