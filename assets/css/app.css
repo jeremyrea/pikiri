@@ -279,11 +279,10 @@ html::-webkit-scrollbar {
 
 /* iOS scrollbar still appears... */
 
-a.text {
+a.hand {
   font-size: xx-large;
-  display: flex;
-  justify-content: center;
-  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 a.wrapper {
@@ -367,6 +366,24 @@ svg.settings {
 
 .user-list td.separator {
   display: none;
+}
+
+.wave {
+  animation-name: wave-animation;
+  animation-duration: 1.2s;
+  animation-iteration-count: 1;
+  transform-origin: 70% 70%;
+}
+
+@keyframes wave-animation {
+    0% { transform: rotate( 0.0deg) }
+   10% { transform: rotate(14.0deg) }
+   20% { transform: rotate(-8.0deg) }
+   30% { transform: rotate(14.0deg) }
+   40% { transform: rotate(-4.0deg) }
+   50% { transform: rotate(10.0deg) }
+   60% { transform: rotate( 0.0deg) }
+  100% { transform: rotate( 0.0deg) }
 }
 
 @media only screen and (max-width: 30em) {
