@@ -11,14 +11,16 @@ defmodule Pikiri.Users do
     |> Repo.insert()
   end
 
-  @spec set_role(t(), t()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
+  @spec set_role(User.t(), String.t()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
+  def set_role(_, nil), do: nil
   def set_role(user, role) do
     user
     |> User.changeset_role(%{role: role})
     |> Repo.update()
   end
 
-  @spec set_status(t(), t()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
+  @spec set_status(User.t(), String.t()) :: {:ok, t()} | {:error, Ecto.Changeset.t()}
+  def set_status(_, nil), do: nil
   def set_status(user, status) do
     user
     |> User.changeset_status(%{status: status})
@@ -30,15 +32,15 @@ defmodule Pikiri.Users do
   def is_admin?(_any), do: false
 
   def list_users() do
-    User 
-    |> order_by(desc: :id) 
+    User
+    |> order_by(desc: :id)
     |> Repo.all
   end
 
-  @spec get_user(Ecto.UUID) :: User
+  @spec get_user(Ecto.UUID) :: User | nil
   def get_user(uuid), do: User |> Repo.get_by(uuid: uuid)
 
-  @spec get_user_by_email(String) :: User
+  @spec get_user_by_email(String) :: User | nil
   def get_user_by_email(email), do: User |> Repo.get_by(email: email)
 
   @spec delete_user(Ecto.UUID) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}

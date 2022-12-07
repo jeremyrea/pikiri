@@ -2,9 +2,9 @@ defmodule PikiriWeb.Live.Feed do
   use PikiriWeb, :live_view
 
   alias Pikiri.Posts
-  alias Pikiri.Users
   alias Pikiri.Uploaders.PhotoUploader
 
+  @impl true
   def render(assigns) do
     ~H"""
     <%= if @new_posts_available do %>
@@ -68,7 +68,8 @@ defmodule PikiriWeb.Live.Feed do
     |> assign(:update_method, "append")
   end
 
-  def handle_info({:new_post, %{user_id: uploader_id, post_id: post_id}} = info, socket) do
+  @impl true
+  def handle_info({:new_post, %{user_id: uploader_id, post_id: post_id}} = _info, socket) do
     user_id = socket.assigns.current_user
     new_post = Posts.get_post(post_id, user_id)
 
@@ -93,7 +94,7 @@ defmodule PikiriWeb.Live.Feed do
     end
   end
 
-  def handle_event("load-more", %{"cursor" => cursor}, %{assigns: assigns} = socket) do
+  def handle_event("load-more", %{"cursor" => cursor}, %{assigns: _assigns} = socket) do
     {:noreply, socket |> assign(cursor: cursor) |> fetch()}
   end
 
@@ -170,6 +171,6 @@ defmodule PikiriWeb.Live.Feed do
 
     updated_post = Posts.get_post(post_id, user_id)
 
-    {:noreply, socket |> update(:posts, fn posts -> [updated_post] end)}
+    {:noreply, socket |> update(:posts, fn _posts -> [updated_post] end)}
   end
 end

@@ -21,11 +21,11 @@ defmodule PikiriWeb.Plugs.EnsureRole do
   def call(conn, roles) do
     token = conn.req_cookies["pikiri_auth_token"]
     case Pikiri.Guardian.resource_from_token(token) do
-    {:ok, resource, claims} -> 
-        has_role?(resource, roles) 
+    {:ok, resource, _claims} ->
+        has_role?(resource, roles)
         |> maybe_halt(conn)
         |> assign_helpers(resource)
-    {:error, error} -> 
+    {:error, _error} ->
         has_role?(nil, roles) |> maybe_halt(conn)
     end
   end

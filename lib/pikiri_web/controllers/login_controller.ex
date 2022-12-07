@@ -12,7 +12,7 @@ defmodule PikiriWeb.LoginController do
   def create(conn, %{"email" => email}) do
     email
     |> Users.get_user_by_email()
-    |> Pikiri.Guardian.send_magic_link()
+    |> Guardian.send_magic_link()
 
     render(conn, "show.html", email: email)
   end
