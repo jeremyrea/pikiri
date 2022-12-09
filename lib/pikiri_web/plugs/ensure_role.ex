@@ -8,6 +8,7 @@ defmodule PikiriWeb.Plugs.EnsureRole do
   """
   import Plug.Conn, only: [halt: 1, assign: 3, put_session: 3]
 
+  alias Pikiri.Guardian
   alias PikiriWeb.Router.Helpers, as: Routes
   alias Phoenix.Controller
   alias Plug.Conn
@@ -20,7 +21,7 @@ defmodule PikiriWeb.Plugs.EnsureRole do
   @spec call(Conn.t(), atom() | binary() | [atom()] | [binary()]) :: Conn.t()
   def call(conn, roles) do
     token = conn.req_cookies["pikiri_auth_token"]
-    case Pikiri.Guardian.resource_from_token(token) do
+    case Guardian.resource_from_token(token) do
     {:ok, resource, _claims} ->
         has_role?(resource, roles)
         |> maybe_halt(conn)
