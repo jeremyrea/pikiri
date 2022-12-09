@@ -11,10 +11,10 @@ defmodule UploadComponent do
         <%= if @show do %>
           <div class="preview">
             <figure>
-              <%= live_file_input @uploads.photo, class: "upload-input center" %>
+              <.live_file_input upload={@uploads.photo} class="upload-input center" />
               <%= for entry <- @uploads.photo.entries do %>
                 <progress value={entry.progress} max="100" class="upload-progress center"> <%= entry.progress %>% </progress>
-                <%= live_img_preview entry, class: "center" %>
+                <.live_img_preview entry={entry} class="center" />
                 <%= for err <- upload_errors(@uploads.photo, entry) do %>
                   <p class="alert alert-danger"><%= error_to_string(err) %></p>
                 <% end %>
@@ -39,7 +39,7 @@ defmodule UploadComponent do
   defp get_ref(entries) do
     case List.first(entries) do
       nil -> nil
-      entry -> entry.ref |> IO.puts
+      entry -> entry.ref
     end
   end
 
