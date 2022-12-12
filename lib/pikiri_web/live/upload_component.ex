@@ -24,7 +24,7 @@ defmodule UploadComponent do
               <%= text_input f, :caption, [class: "caption", placeholder: gettext("Caption"), maxlength: 80] %>
             </.form>
             <button type="submit">Submit</button>
-            <button phx-click="cancel-upload" phx-value-ref={get_ref(@uploads.photo.entries)}>Cancel</button>
+            <button type="button" phx-click="cancel-upload" phx-value-ref={get_ref(@uploads.photo.entries)}>Cancel</button>
           </div>
         <% end %>
         <%= for err <- upload_errors(@uploads.photo) do %>
@@ -35,7 +35,6 @@ defmodule UploadComponent do
     """
   end
 
-  # Cancel does not work for some reason
   defp get_ref(entries) do
     case List.first(entries) do
       nil -> nil
