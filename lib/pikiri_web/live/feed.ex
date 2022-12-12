@@ -21,7 +21,7 @@ defmodule PikiriWeb.Live.Feed do
       </div>
     <% end %>
     <div class="feed">
-      <table style={"display: #{if @show_upload_modal, do: 'none', else: 'revert'}"}>
+      <table style={"visibility: #{if @show_upload_modal, do: 'hidden', else: 'revert'}"}>
         <tbody id="photos" phx-update={@update_method}>
           <%= for {post, index} <- Enum.with_index(@posts) do %>
             <.live_component module={RowComponent} id={post.id} post={post}>
