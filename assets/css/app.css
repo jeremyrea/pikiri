@@ -213,13 +213,20 @@ html::-webkit-scrollbar {
 }
 
 .feed .actions .upload .preview {
-  background-color: wheat;
-  position: fixed;
-  left: 50%;
-  top: -300%;
-  transform: translate(-50%, -50%);
-  width: 50%;
+  background-color: white;
+  position: absolute;
   display: grid;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, -30%);
+  width: 50vw;
+  max-height: 600px;
+  max-width: 500px;
+  border-radius: 10px;
+  border-color: lightgray;
+  border-width: 1px;
+  border-style: solid;
+  box-shadow: 4px 4px 10px lightgray;
 }
 
 .feed .actions .upload .preview figure {
