@@ -28,5 +28,7 @@ defmodule Pikiri.Guardian do
     user
     |> Pikiri.UserEmail.magic_link_email(magic_token, extra_params)
     |> Pikiri.Mailer.deliver
+
+    Pikiri.Logs.create_log_event(%{user_id: user.id, event: "login_email"})
   end
 end
