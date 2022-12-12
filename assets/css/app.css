@@ -340,6 +340,35 @@ svg.settings {
   float: right;
 }
 
+.card td .like.liked {
+  animation-name: grow-heart-animation;
+  animation-duration: 0.4s;
+}
+
+@keyframes grow-heart-animation {
+  0% {
+    fill: #ff9393;
+    transform: scale(1);
+  }
+  20% {
+    fill: #ff6e6e;
+    transform: scale(1.4);
+  }
+  40% {
+    fill: #ff4b4b;
+    transform: scale(1.8);
+  }
+  60% {
+    transform: scale(1.4);
+  }
+  80% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .card .caption {
   display: inline-block;
   font-family: 'Nanum Pen Script', cursive;

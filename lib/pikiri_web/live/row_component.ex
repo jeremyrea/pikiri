@@ -22,7 +22,7 @@ defmodule RowComponent do
             <%= @post.inserted_at |> Calendar.strftime("%d-%m-%Y") %>
           </div>
           <div phx-click="toggle-like" phx-value-post_id={@post.id} phx-value-liked={if @post.liked, do: 1, else: 0}>
-            <FontAwesome.LiveView.icon name="heart" type={if @post.liked, do: "solid", else: "regular"} class="like" />
+            <FontAwesome.LiveView.icon name="heart" type={if @post.liked, do: "solid", else: "regular"} class={"like #{if @post.liked, do: 'liked'}"} />
           </div>
           <div class="caption" style={"rotate: #{@post.content.caption_rotation}deg"}>
             <%= @post.content.caption %>
