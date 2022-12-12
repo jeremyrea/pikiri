@@ -12,10 +12,10 @@ defmodule Pikiri.Posts do
 
     angle = :rand.uniform(max_angle)
     sign = (:rand.uniform(1) * 2) - 1
-    put_in(params, [:content, :caption_rotation], angle * sign)
+    updated_params = put_in(params, [:content, :caption_rotation], angle * sign)
 
     %Post{}
-    |> Post.changeset(params)
+    |> Post.changeset(updated_params)
     |> Repo.insert()
   end
 

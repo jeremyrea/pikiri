@@ -341,12 +341,12 @@ svg.settings {
 }
 
 .card .caption {
+  display: inline-block;
   font-family: 'Nanum Pen Script', cursive;
   font-size: 40px;
   line-height: 0.8em;
   margin-top: 1em;
   margin-left: 1em;
-  rotate: -5deg;
 }
 
 .card .timestamp {
