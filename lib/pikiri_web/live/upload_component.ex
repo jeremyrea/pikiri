@@ -11,10 +11,14 @@ defmodule UploadComponent do
         <%= if @show do %>
           <div class="preview">
             <figure>
-              <.live_file_input upload={@uploads.photo} class="upload-input center" />
+              <.live_file_input
+                upload={@uploads.photo}
+                class="upload-input center"
+                style={"display: #{if Kernel.length(@uploads.photo.entries) > 0, do: 'none', else: 'revert'}"}
+              />
               <%= for entry <- @uploads.photo.entries do %>
-                <progress value={entry.progress} max="100" class="upload-progress center"> <%= entry.progress %>% </progress>
-                <.live_img_preview entry={entry} class="center" />
+                <div id="cropper-hook" phx-hook="ImageCropper" hidden />
+                <.live_img_preview entry={entry} class="crop-target" />
                 <%= for err <- upload_errors(@uploads.photo, entry) do %>
                   <p class="alert alert-danger"><%= error_to_string(err) %></p>
                 <% end %>

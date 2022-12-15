@@ -235,10 +235,9 @@ html::-webkit-scrollbar {
 }
 
 .feed .actions .upload .preview figure img {
-  position: relative;
-  width: 100%;
+  /* width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; */
 }
 
 .feed .actions .upload .preview .caption {

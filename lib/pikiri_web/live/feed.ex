@@ -56,6 +56,7 @@ defmodule PikiriWeb.Live.Feed do
      |> assign(:show_upload_modal, false)
      |> assign(:new_posts_available, false)
      |> assign(:current_user, session["user_id"])
+     |> assign(:mask, %{})
      |> assign(:changeset, Posts.Post.changeset(%Posts.Post{}))
      |> allow_upload(:photo, accept: ~w(.jpg .jpeg .png), max_entries: 1)
      |> fetch(), temporary_assigns: [posts: []]}
@@ -98,6 +99,10 @@ defmodule PikiriWeb.Live.Feed do
     {:noreply, socket |> assign(cursor: cursor) |> fetch()}
   end
 
+  def handle_event("update-mask", %{"value" => value}, %{assigns: _assigns} = socket) do
+    {:noreply, socket |> assign(mask: value)}
+  end
+
   def handle_event("validate", _params, socket) do
     {:noreply, socket}
   end
@@ -135,6 +140,7 @@ defmodule PikiriWeb.Live.Feed do
         filename: Path.basename(new_file),
         binary: binary
       },
+      mask: socket.assigns.mask,
       caption: caption
     }
 
