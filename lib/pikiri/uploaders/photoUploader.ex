@@ -17,7 +17,7 @@ defmodule Pikiri.Uploaders.PhotoUploader do
   end
 
   def crop_cmd(mask) do
-    "-strip -crop #{mask["width"]}x#{mask["height"]}+#{mask["x"]}+#{mask["y"]} +repage"
+    "-auto-orient -strip -crop #{mask["width"]}x#{mask["height"]}+#{mask["x"]}+#{mask["y"]} +repage"
   end
 
   def transform(:avif, {_file, scope}), do: {:convert, "#{crop_cmd(scope.mask)} -format avif", :avif}
