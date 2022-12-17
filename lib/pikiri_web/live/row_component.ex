@@ -2,6 +2,8 @@ defmodule RowComponent do
   use PikiriWeb, :live_component
   import PolymorphicEmbed
 
+  alias Pikiri.Uploaders.PhotoUploader
+
   def render(assigns) do
     ~H"""
     <tr id={"#{@post.id}"} class="card">
@@ -13,7 +15,7 @@ defmodule RowComponent do
                 <% nil -> %>
                   <span>No image</span>
                 <% _ -> %>
-                  <img src={"/uploads/posts/#{@post.content.photo.file_name}"} loading="lazy" oncontextmenu="return false;" />
+                  <img src={image_path(@post.content)} loading="lazy" oncontextmenu="return false;" />
               <%end%>
             <% :text -> %>
               <% @post.content.text %>
@@ -30,5 +32,9 @@ defmodule RowComponent do
       </td>
     </tr>
     """
+  end
+
+  defp image_path(post) do
+    PhotoUploader.url({post.photo.file_name, post}, :jpeg)
   end
 end

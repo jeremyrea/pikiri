@@ -125,7 +125,8 @@ defmodule PikiriWeb.Live.Feed do
       consume_uploaded_entries(socket, :photo, fn %{path: path}, entry ->
         [file_extension | _] = MIME.extensions(entry.client_type)
         file_name = "#{entry.uuid}.#{file_extension}"
-        dest = Path.join([PhotoUploader.storage_dir, file_name])
+
+        dest = Path.join([System.tmp_dir!(), file_name])
 
         File.cp!(path, dest)
         {:ok, dest}

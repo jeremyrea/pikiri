@@ -9,7 +9,7 @@ import Config
 
 config :pikiri,
   ecto_repos: [Pikiri.Repo],
-  uploads_directory: "/app/uploads" # Make docker env variable
+  uploads_directory: "uploads"
 
 # Configures the endpoint
 host = System.get_env("PHX_HOST") || "localhost"

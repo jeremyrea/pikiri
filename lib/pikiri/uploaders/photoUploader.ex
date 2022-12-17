@@ -4,10 +4,9 @@ defmodule Pikiri.Uploaders.PhotoUploader do
 
   # To add a thumbnail version:
   # @versions [:original, :thumb]
-  @versions [:original]
+  @versions [:original, :jpeg]
   @extension_whitelist ~w(.jpg .jpeg .png)
 
-  # Whitelist file extensions:
   def validate({file, _}) do
     file_extension = file.file_name |> Path.extname() |> String.downcase()
 
@@ -17,10 +16,18 @@ defmodule Pikiri.Uploaders.PhotoUploader do
     end
   end
 
-  def filename(_version, {file, _scope}) do
-    file.file_name |> Path.basename(Path.extname(file.file_name))
+  def crop_cmd(mask) do
+    "-strip -crop #{mask["width"]}x#{mask["height"]}+#{mask["x"]}+#{mask["y"]} +repage"
   end
 
-  def storage_dir(_version, {_file, _scope}), do: storage_dir()
-  def storage_dir(), do: Path.join([Application.get_env(:pikiri, :uploads_directory), "posts"])
+  def transform(:jpeg, {_file, scope}), do: {:convert, "#{crop_cmd(scope.mask)} -format jpeg", :jpeg}
+  def uuid(file), do: file.file_name |> Path.basename(Path.extname(file.file_name))
+
+  def filename(:original, {file, _scope}), do: uuid(file)
+  def filename(_version, {file, _scope}), do: uuid(file)
+
+  defp base_dir(), do:  Path.join([Application.get_env(:pikiri, :uploads_directory), "posts"])
+
+  def storage_dir(:original, {_file, _scope}), do: Path.join([base_dir(), "originals"])
+  def storage_dir(_version, {file, _scope}), do: Path.join([base_dir(), "public", uuid((file))])
 end
