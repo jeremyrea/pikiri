@@ -30,7 +30,7 @@ defmodule Pikiri.Uploaders.PhotoUploader do
   def filename(:original, {file, _scope}), do: uuid(file)
   def filename(_version, {file, _scope}), do: uuid(file)
 
-  defp base_dir(), do:  Path.join([Application.get_env(:pikiri, :uploads_directory), "posts"])
+  defp base_dir(), do:  Path.join(["uploads", "posts"])
 
   def storage_dir(:original, {_file, _scope}), do: Path.join([base_dir(), "originals"])
   def storage_dir(_version, {file, _scope}), do: Path.join([base_dir(), "public", uuid((file))])

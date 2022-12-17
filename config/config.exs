@@ -8,8 +8,7 @@
 import Config
 
 config :pikiri,
-  ecto_repos: [Pikiri.Repo],
-  uploads_directory: "uploads"
+  ecto_repos: [Pikiri.Repo]
 
 # Configures the endpoint
 host = System.get_env("PHX_HOST") || "localhost"
@@ -49,6 +48,7 @@ config :swoosh, :api_client, false
 
 config :waffle,
   storage: Waffle.Storage.Local,
+  storage_dir_prefix: "priv/static",
   asset_host: {:system, "ASSET_HOST"}
 
 # Configure esbuild (the version is required)
