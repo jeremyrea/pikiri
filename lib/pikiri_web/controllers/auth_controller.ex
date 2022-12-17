@@ -13,11 +13,13 @@ defmodule PikiriWeb.AuthController do
         case Guardian.resource_from_claims(claims) do
         {:ok, user} -> Users.set_status(user, "confirmed")
         {:error, :not_found} -> IO.puts("User not found from magic token")
-        end 
+        end
 
+        one_year = 365 * 24 * 3600
         ops = [
-          sign: false, 
-          http_only: false, 
+          max_age: one_year,
+          sign: false,
+          http_only: false,
           same_site: "strict"
         ]
         put_resp_cookie(conn, "pikiri_auth_token", access_token, ops)
