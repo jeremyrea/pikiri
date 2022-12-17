@@ -15,7 +15,12 @@ defmodule RowComponent do
                 <% nil -> %>
                   <span>No image</span>
                 <% _ -> %>
-                  <img src={image_path(@post.content)} loading="lazy" oncontextmenu="return false;" />
+                  <picture>
+                    <source srcset={image_path(@post.content, :avif)} type="image/avif" loading="lazy" oncontextmenu="return false;" />
+                    <source srcset={image_path(@post.content, :jxl)} type="image/jxl" loading="lazy" oncontextmenu="return false;" />
+                    <source srcset={image_path(@post.content, :webp)} type="image/webp" loading="lazy" oncontextmenu="return false;" />
+                    <img src={image_path(@post.content, :jpeg)} loading="lazy" oncontextmenu="return false;" />
+                  </picture>
               <%end%>
             <% :text -> %>
               <% @post.content.text %>
@@ -34,7 +39,7 @@ defmodule RowComponent do
     """
   end
 
-  defp image_path(post) do
-    PhotoUploader.url({post.photo.file_name, post}, :jpeg)
+  defp image_path(post, format) do
+    PhotoUploader.url({post.photo.file_name, post}, format)
   end
 end

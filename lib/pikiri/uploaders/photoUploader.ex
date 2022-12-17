@@ -4,7 +4,7 @@ defmodule Pikiri.Uploaders.PhotoUploader do
 
   # To add a thumbnail version:
   # @versions [:original, :thumb]
-  @versions [:original, :jpeg]
+  @versions [:original, :avif, :jpeg, :jxl, :webp]
   @extension_whitelist ~w(.jpg .jpeg .png)
 
   def validate({file, _}) do
@@ -20,7 +20,11 @@ defmodule Pikiri.Uploaders.PhotoUploader do
     "-strip -crop #{mask["width"]}x#{mask["height"]}+#{mask["x"]}+#{mask["y"]} +repage"
   end
 
+  def transform(:avif, {_file, scope}), do: {:convert, "#{crop_cmd(scope.mask)} -format avif", :avif}
   def transform(:jpeg, {_file, scope}), do: {:convert, "#{crop_cmd(scope.mask)} -format jpeg", :jpeg}
+  def transform(:jxl, {_file, scope}), do: {:convert, "#{crop_cmd(scope.mask)} -format jxl", :jxl}
+  def transform(:webp, {_file, scope}), do: {:convert, "#{crop_cmd(scope.mask)} -format webp", :webp}
+
   def uuid(file), do: file.file_name |> Path.basename(Path.extname(file.file_name))
 
   def filename(:original, {file, _scope}), do: uuid(file)
