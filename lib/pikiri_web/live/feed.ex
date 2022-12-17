@@ -2,7 +2,6 @@ defmodule PikiriWeb.Live.Feed do
   use PikiriWeb, :live_view
 
   alias Pikiri.Posts
-  alias Pikiri.Uploaders.PhotoUploader
 
   @impl true
   def render(assigns) do
