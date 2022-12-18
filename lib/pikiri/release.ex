@@ -5,6 +5,18 @@ defmodule Pikiri.Release do
   """
   @app :pikiri
 
+  def seed do
+    start_app()
+
+    for repo <- repos() do
+      seed_script = priv_path_for(repo, "seeds.exs")
+
+      if File.exists?(seed_script) do
+        Code.eval_file(seed_script)
+      end
+    end
+  end
+
   def migrate do
     load_app()
 
@@ -24,5 +36,24 @@ defmodule Pikiri.Release do
 
   defp load_app do
     Application.load(@app)
+  end
+
+  defp start_app do
+    load_app()
+    Application.ensure_all_started(@app)
+  end
+
+  defp priv_path_for(repo, filename) do
+    app = Keyword.get(repo.config, :otp_app)
+
+    repo_underscore =
+      repo
+      |> Module.split()
+      |> List.last()
+      |> Macro.underscore()
+
+    priv_dir = "#{:code.priv_dir(app)}"
+
+    Path.join([priv_dir, repo_underscore, filename])
   end
 end

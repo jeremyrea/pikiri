@@ -13,4 +13,7 @@ alias Pikiri.Users
 
 email = Application.fetch_env!(:pikiri, :admin_email)
 
-{ :ok, user } = Users.create_user(%{email: email, role: "admin"})
+case Users.get_user_by_email(email) do
+  nil -> Users.create_user(%{email: email, role: "admin"})
+  _ -> :ok
+end

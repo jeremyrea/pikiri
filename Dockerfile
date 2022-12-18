@@ -89,4 +89,4 @@ COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/pikiri ./
 
 USER nobody
 
-CMD ["/app/bin/server"]
+CMD ["/app/bin/entrypoint"]
