@@ -1,0 +1,18 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+    tags:
+      - '*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build latest Docker image
+      run: |
+        docker build . --file Dockerfile --tag ghcr.io/jeremyrea/pikiri:latest
+        echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u jeremyrea --password-stdin
+        docker push ghcr.io/jeremyrea/pikiri:latest
