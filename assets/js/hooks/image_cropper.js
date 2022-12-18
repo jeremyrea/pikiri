@@ -1,4 +1,4 @@
-import Croppr from "croppr"
+import Croppr from "../../vendor/croppr"
 import {waitForElement} from "../utils"
 
 export const ImageCropper = {
