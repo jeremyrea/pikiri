@@ -55,7 +55,8 @@ defmodule Pikiri.MixProject do
       {:polymorphic_embed, "~> 3.0"},
       {:waffle, "~> 1.1"},
       {:waffle_ecto, "~> 0.0"},
-      {:mime, "~> 2.0"}
+      {:mime, "~> 2.0"},
+      {:ulid, "~> 0.2"}
     ]
   end
 

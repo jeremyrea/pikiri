@@ -123,7 +123,7 @@ defmodule PikiriWeb.Live.Feed do
     uploaded_files =
       consume_uploaded_entries(socket, :photo, fn %{path: path}, entry ->
         [file_extension | _] = MIME.extensions(entry.client_type)
-        file_name = "#{entry.uuid}.#{file_extension}"
+        file_name = "#{Ulid.generate()}.#{file_extension}"
 
         dest = Path.join([System.tmp_dir!(), file_name])
 
