@@ -43,7 +43,7 @@ if config_env() == :prod do
   #   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   #   socket_options: maybe_ipv6
   config :pikiri, Pikiri.Repo,
-    database: "/app/db/pikiri.db",
+    database: "db/pikiri.db",
     stacktrace: true,
     show_sensitive_data_on_connection_error: true,
     pool_size: 10
