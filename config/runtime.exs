@@ -41,7 +41,8 @@ if config_env() == :prod do
     database: "pikiri",
     username: System.get_env("DB_USER"),
     password: System.get_env("DB_PASSWORD"),
-    hostname: "localhost"
+    hostname: "localhost",
+    show_sensitive_data_on_connection_error: true
 
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
