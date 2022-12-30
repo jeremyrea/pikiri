@@ -24,7 +24,7 @@ defmodule PikiriWeb.Endpoint do
 
   plug Plug.Static,
     at: "/uploads/posts",
-    from: Path.expand("/uploads/posts"),
+    from: "/app/uploads/posts",
     only: ~w(public),
     gzip: false
 
