@@ -48,7 +48,7 @@ config :swoosh, :api_client, false
 
 config :waffle,
   storage: Waffle.Storage.Local,
-  storage_dir_prefix: Application.app_dir(:pikiri, ["priv", "static"]),
+  storage_dir_prefix: Path.expand("./priv/static"),
   asset_host: {:system, "ASSET_HOST"}
 
 # Configure esbuild (the version is required)
