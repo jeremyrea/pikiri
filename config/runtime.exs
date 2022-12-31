@@ -38,11 +38,10 @@ if config_env() == :prod do
   # maybe_ipv6 = if System.get_env("ECTO_IPV6"), do: [:inet6], else: []
 
   config :pikiri, Pikiri.Repo,
-    database: "pikiri",
-    username: System.get_env("DB_USER"),
-    password: System.get_env("DB_PASSWORD"),
-    hostname: "localhost",
-    show_sensitive_data_on_connection_error: true
+    database: "database/pikiri.db",
+    stacktrace: false,
+    show_sensitive_data_on_connection_error: false,
+    pool_size: 10
 
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
