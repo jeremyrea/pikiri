@@ -27,6 +27,13 @@ admin_email =
     """
 config :pikiri, admin_email: admin_email
 
+host =
+  System.get_env("PHX_HOST") ||
+    raise """
+    environment variable PHX_HOST is missing.
+    """
+config :pikiri, host: host
+
 if config_env() == :prod do
   # database_url =
   #   System.get_env("DATABASE_URL") ||
@@ -55,7 +62,6 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  host = System.get_env("PHX_HOST") || "example.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :pikiri, PikiriWeb.Endpoint,

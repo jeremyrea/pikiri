@@ -5,6 +5,6 @@
   <body>
     Hi!
     <br>
-    <a href="<%= PikiriWeb.Endpoint.url %>/auth?token=<%= @magic_token %>"}>Click the link</a>
+    <a href="<%= Application.fetch_env!(:pikiri, :host) %>/auth?token=<%= @magic_token %>"}>Click the link</a>
   </body>
 </html>
