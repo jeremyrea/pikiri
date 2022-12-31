@@ -38,7 +38,7 @@ if config_env() == :prod do
   # maybe_ipv6 = if System.get_env("ECTO_IPV6"), do: [:inet6], else: []
 
   config :pikiri, Pikiri.Repo,
-    database: "database/pikiri.db",
+    database: Path.expand("../database/pikiri.db"),
     stacktrace: false,
     show_sensitive_data_on_connection_error: false,
     pool_size: 10
