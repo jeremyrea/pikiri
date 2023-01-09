@@ -40,7 +40,7 @@ config :pikiri, Pikiri.Guardian,
   secret_key: "V31AmclpyBV7Oftzex03shXBtQUP/MpKfNO5IzwRpaEps7foNTgF8l008jugyyJS",
   token_ttl: %{
     "magic" => {30, :minutes},
-    "access" => {1, :week}
+    "access" => {1, :year}
   }
 
 # Swoosh API client is needed for adapters other than SMTP.
