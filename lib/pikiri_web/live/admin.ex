@@ -38,7 +38,7 @@ defmodule PikiriWeb.Live.Admin do
               <td data-th={gettext("Role")}>
                 <form phx-change="role_changed">
                 <input name="uuid" value={user.uuid} hidden="true" />
-                <select name="role" id="select_role">
+                <select name="role" id="select_role" disabled={@current_user == user.id || user.status == "disabled"}>
                   <%= for {role_label, role_key} <- @roles do %>
                     <option value={role_key} selected={selected_attr(user.role, role_key)}>
                       <%= role_label %>
