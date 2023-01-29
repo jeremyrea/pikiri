@@ -28,12 +28,7 @@ config :pikiri, PikiriWeb.Endpoint,
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
 config :pikiri, Pikiri.Mailer,
-  adapter: Swoosh.Adapters.SMTP,
-  relay: System.get_env("SMTP_SERVER"),
-  port: System.get_env("SMTP_PORT"),
-  username: System.get_env("SMTP_USERNAME"),
-  password: System.get_env("SMTP_PASSWORD"),
-  tls: :always
+  adapter: Swoosh.Adapters.Local
 
 config :pikiri, Pikiri.Guardian,
   issuer: "pikiri",
