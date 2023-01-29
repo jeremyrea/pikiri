@@ -5,7 +5,7 @@ defmodule PikiriWeb.Live.Admin do
   alias Pikiri.Users.User
 
   @roles [
-    "#{gettext("Viewer")}": "viewer", 
+    "#{gettext("Viewer")}": "viewer",
     "#{gettext("Contributor")}": "contributor",
     "#{gettext("Admin")}": "admin"
   ]
@@ -23,6 +23,7 @@ defmodule PikiriWeb.Live.Admin do
             <th><%= gettext("Email") %></th>
             <th><%= gettext("Status") %></th>
             <th><%= gettext("Role") %></th>
+            <th></th>
           </tr>
         </thead>
         <tbody id="users" phx-update="append">
@@ -45,9 +46,20 @@ defmodule PikiriWeb.Live.Admin do
                   <% end %>
                   </select>
                 </form>
+              </td>
               <td class="separator" colspan="2">
                 <div></div>
               </td>
+              <td>
+                <%= if user.status == "disabled" do %>
+                  <a phx-click="enable_user" phx-value-uuid={user.uuid}>
+                    <%= gettext("Enable") %>
+                  </a>
+                <% else %>
+                  <a hidden={@current_user == user.id} phx-click="disable_user" phx-value-uuid={user.uuid}>
+                    <%= gettext("Disable") %>
+                  </a>
+                <% end %>
               </td>
             </tr>
           <% end %>
@@ -57,10 +69,11 @@ defmodule PikiriWeb.Live.Admin do
     """
   end
 
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
     {:ok,
-     socket 
-     |> assign(roles: @roles) 
+     socket
+     |> assign(current_user: session["user_id"])
+     |> assign(roles: @roles)
      |> assign(users: Users.list_users())
      |> assign(invitation: User.changeset(%User{}))}
   end
@@ -75,13 +88,35 @@ defmodule PikiriWeb.Live.Admin do
 
   def handle_event("role_changed", %{"uuid" => uuid, "role" => role, "_target" => _target}, socket) do
     {:ok, user} = uuid |> Users.get_user |> Users.set_role(role)
-    
+
     users = socket.assigns.users
-    index = users |> Enum.find_index(fn u -> u.id == user.id end)
+    index = user_index(users, user.id)
     updated_users = List.replace_at(users, index, user)
-    
+
     {:noreply, assign(socket, users: updated_users)}
   end
+
+  def handle_event("disable_user",  %{"uuid" => uuid}, socket) do
+    {:ok, user} = uuid |> Users.get_user() |> Users.set_status("disabled")
+
+    users = socket.assigns.users
+    index = user_index(users, user.id)
+    updated_users = List.replace_at(users, index, user)
+
+    {:noreply, assign(socket, users: updated_users)}
+  end
+
+  def handle_event("enable_user",  %{"uuid" => uuid}, socket) do
+    {:ok, user} = uuid |> Users.get_user() |> Users.set_status("pending")
+
+    users = socket.assigns.users
+    index = user_index(users, user.id)
+    updated_users = List.replace_at(users, index, user)
+
+    {:noreply, assign(socket, users: updated_users)}
+  end
+
+  defp user_index(users, user_id), do: users |> Enum.find_index(fn u -> u.id == user_id end)
 
   defp selected_attr(role, role), do: true
   defp selected_attr(_, _), do: false
