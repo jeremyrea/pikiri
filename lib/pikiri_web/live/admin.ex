@@ -27,7 +27,7 @@ defmodule PikiriWeb.Live.Admin do
         </thead>
         <tbody id="users" phx-update="append">
           <%= for user <- @users do %>
-            <tr id="#{user.uuid}">
+            <tr id={user.uuid}>
               <td data-th={gettext("Email")}>
                 <div><%= user.email %></div>
               </td>
