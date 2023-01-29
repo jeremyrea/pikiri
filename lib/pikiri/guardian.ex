@@ -13,7 +13,7 @@ defmodule Pikiri.Guardian do
 
   @impl true
   def resource_from_claims(%{"sub" => uuid}) do
-    resource = Pikiri.Users.get_user(uuid)
+    resource = Pikiri.Users.get_active_user(uuid)
     case resource do
       nil -> {:error, :not_found}
       _ -> {:ok, resource}
@@ -25,10 +25,12 @@ defmodule Pikiri.Guardian do
 
   @impl true
   def deliver_magic_link(user, magic_token, extra_params) do
-    user
-    |> Pikiri.UserEmail.magic_link_email(magic_token, extra_params)
-    |> Pikiri.Mailer.deliver
-
-    Pikiri.Logs.create_log_event(%{user_id: user.id, event: "login_email"})
+    case user.status do
+      "disabled" -> nil
+      _ ->  user
+            |> Pikiri.UserEmail.magic_link_email(magic_token, extra_params)
+            |> Pikiri.Mailer.deliver
+            Pikiri.Logs.create_log_event(%{user_id: user.id, event: "login_email"})
+    end
   end
 end
