@@ -66,7 +66,6 @@ defmodule PikiriWeb.Live.Admin do
   end
 
   def handle_event("invite", user_changeset, socket) do
-    IO.inspect(user_changeset)
     {:ok, user} = Users.create_user(user_changeset["user"])
     {:ok, _magic_token, _claims} = Pikiri.Guardian.send_magic_link(user)
     updated_users = [ user | socket.assigns.users ]
